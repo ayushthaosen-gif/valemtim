@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Valentine?</title>
+
+  <style>
+    :root { --pink: #ff3b7a; }
+
+    body {
+      margin: 0;
+      height: 100vh;
+      display: grid;
+      place-items: center;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      overflow: hidden;
+    }
+
+    /* GIF background */
+    .bg {
+      position: fixed;
+      inset: 0;
+      background: url("YOUR_BACKGROUND_GIF_URL.gif") center/cover no-repeat;
+      filter: brightness(0.9);
+      transform: scale(1.02);
+      z-index: -2;
+    }
+
+    /* Soft overlay so text stays readable */
+    .bg-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(255, 240, 248, 0.55);
+      backdrop-filter: blur(2px);
+      z-index: -1;
+    }
+
+    .card {
+      text-align: center;
+      background: rgba(255,255,255,.82);
+      border: 1px solid rgba(255,255,255,.6);
+      padding: 28px 22px;
+      border-radius: 18px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.12);
+      max-width: 520px;
+      margin: 16px;
+    }
+
+    h1 { margin: 0 0 14px; font-size: 34px; }
+    p  { margin: 0 0 18px; font-size: 16px; opacity: .85; }
+
+    .btns {
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    button {
+      font-size: 18px;
+      padding: 12px 18px;
+      border: 0;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: transform .12s ease;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    button:active { transform: scale(.98); }
+
+    #yes {
+      background: var(--pink);
+      color: white;
+      box-shadow: 0 10px 20px rgba(255,59,122,.25);
+    }
+
+    #no {
+      background: #111827;
+      color: white;
+      position: fixed;
+      left: 50%;
+      top: 55%;
+      transform: translate(-50%, -50%);
+    }
+
+    #msg {
+      margin-top: 16px;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--pink);
+      min-height: 1.2em;
+    }
+
+    /* YES overlay image modal */
+    .modal {
+      position: fixed;
+      inset: 0;
+      display: none;
+      place-items: center;
+      background: rgba(0,0,0,.55);
+      padding: 18px;
+    }
+
+    .modal.show { display: grid; }
+
+    .modal-card {
+      background: white;
+      border-radius: 16px;
+      max-width: 720px;
+      width: min(92vw, 720px);
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,.35);
+    }
+
+    .modal-card img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: center;
+      padding: 12px;
+      background: #fff;
+    }
+
+    .close {
+      background: #111827;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 999px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="bg"></div>
+  <div class="bg-overlay"></div>
+
+  <div class="card">
+    <h1>Will you be my Valentine? 💘</h1>
+    <p>There is clearly a correct choice.</p>
+
+    <div class="btns">
+      <button id="yes">Yes</button>
+      <button id="no" aria-label="No">No</button>
+    </div>
+
+    <div id="msg"></div>
+  </div>
+
+  <!-- Image that appears after YES -->
+  <div class="modal" id="modal">
+    <div class="modal-card">
+      <img src="YOUR_YES_IMAGE_URL.jpg" alt="A surprise 💖" />
+      <div class="modal-actions">
+        <button class="close" id="closeModal">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const noBtn = document.getElementById("no");
+    const yesBtn = document.getElementById("yes");
+    const msg = document.getElementById("msg");
+    const modal = document.getElementById("modal");
+    const closeModal = document.getElementById("closeModal");
+
+    function moveNoButton() {
+      const pad = 12;
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+
+      const bw = noBtn.offsetWidth;
+      const bh = noBtn.offsetHeight;
+
+      const x = Math.floor(Math.random() * (w - bw - pad * 2)) + pad;
+      const y = Math.floor(Math.random() * (h - bh - pad * 2)) + pad;
+
+      noBtn.style.left = x + "px";
+      noBtn.style.top  = y + "px";
+      noBtn.style.transform = "none";
+    }
+
+    noBtn.addEventListener("mouseenter", moveNoButton);
+    noBtn.addEventListener("mousemove", moveNoButton);
+
+    noBtn.addEventListener("touchstart", (e) => {
+      e.preventDefault();
+      moveNoButton();
+    }, { passive: false });
+
+    noBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      moveNoButton();
+    });
+
+    yesBtn.addEventListener("click", () => {
+      msg.textContent = "YAYYYYY!! 💖🥰";
+      modal.classList.add("show");
+      noBtn.style.display = "none";
+      yesBtn.style.display = "none";
+    });
+
+    closeModal.addEventListener("click", () => modal.classList.remove("show"));
+
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) modal.classList.remove("show");
+    });
+
+    setTimeout(moveNoButton, 200);
+    window.addEventListener("resize", () => setTimeout(moveNoButton, 50));
+  </script>
+</body>
+</html>
