@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Valentine?</title>
+  <title>Valentines</title>
 
   <style>
     :root { --pink: #ff3b7a; }
@@ -21,13 +21,12 @@
     .bg {
       position: fixed;
       inset: 0;
-      background: url("YOUR_BACKGROUND_GIF_URL.gif") center/cover no-repeat;
+      background: url("./bg.gif") center/cover no-repeat;
       filter: brightness(0.9);
       transform: scale(1.02);
       z-index: -2;
     }
 
-    /* Soft overlay so text stays readable */
     .bg-overlay {
       position: fixed;
       inset: 0;
@@ -93,7 +92,7 @@
       min-height: 1.2em;
     }
 
-    /* YES overlay image modal */
+    /* YES modal */
     .modal {
       position: fixed;
       inset: 0;
@@ -146,16 +145,15 @@
 
     <div class="btns">
       <button id="yes">Yes</button>
-      <button id="no" aria-label="No">No</button>
+      <button id="no">No</button>
     </div>
 
     <div id="msg"></div>
   </div>
 
-  <!-- Image that appears after YES -->
   <div class="modal" id="modal">
     <div class="modal-card">
-      <img src="YOUR_YES_IMAGE_URL.jpg" alt="A surprise 💖" />
+      <img src="./yes.jpg" alt="A surprise 💖" />
       <div class="modal-actions">
         <button class="close" id="closeModal">Close</button>
       </div>
