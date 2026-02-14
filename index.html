@@ -15,145 +15,159 @@
       overflow:hidden;background:#000;
     }
 
-    /* Repeating GIF background */
     .bg{
       position:fixed;inset:0;
       background:url("./bg.gif") repeat;
       background-size:220px;
-      z-index:-5;
+      z-index:-6;
+      filter:saturate(1.05);
     }
 
-    /* Cinematic spotlight */
     .spotlight{
+      position:fixed;inset:0;z-index:-5;
+      background:
+        radial-gradient(circle at var(--sx, 50%) var(--sy, 42%),
+          rgba(255,190,220, calc(0.18 + (1 - var(--dark, 0.92)) * 0.42)) 0%,
+          rgba(255,120,170, calc(0.10 + (1 - var(--dark, 0.92)) * 0.28)) 26%,
+          rgba(0,0,0, var(--dark, 0.92)) 64%,
+          rgba(0,0,0, var(--dark, 0.92)) 100%);
+      transition: background 520ms ease;
+    }
+    .tint{
       position:fixed;inset:0;z-index:-4;
       background:
-        radial-gradient(circle at var(--sx, 50%) var(--sy, 40%),
-          rgba(255,180,210, calc(0.20 + (1 - var(--dark, 0.92)) * 0.35)) 0%,
-          rgba(255,130,170, calc(0.12 + (1 - var(--dark, 0.92)) * 0.25)) 28%,
-          rgba(0,0,0, var(--dark, 0.92)) 62%,
-          rgba(0,0,0, var(--dark, 0.92)) 100%);
-      transition: background 700ms ease;
-    }
-
-    .tint{
-      position:fixed;inset:0;z-index:-3;
-      background:rgba(255,240,248,.42);
+        radial-gradient(circle at 50% 20%, rgba(255,59,122,.16), transparent 55%),
+        rgba(255,240,248,.34);
       backdrop-filter: blur(2px);
     }
 
-    /* Glass card */
     .card{
-      text-align:center;
-      width:min(620px, 92vw);
-      padding:28px 22px;
+      width:min(640px, 92vw);
       border-radius:18px;
-      background: rgba(255,255,255,.18);
-      border: 1px solid rgba(255,255,255,.25);
-      box-shadow: 0 18px 60px rgba(0,0,0,.30);
+      background: rgba(255,255,255,.16);
+      border: 1px solid rgba(255,255,255,.22);
+      box-shadow: 0 22px 70px rgba(0,0,0,.34);
       backdrop-filter: blur(10px);
+      padding:18px;
       animation: floaty 3.2s ease-in-out infinite;
     }
-    @keyframes floaty{ 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
+    @keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
 
     .card-inner{
-      background: rgba(255,255,255,.78);
-      border: 1px solid rgba(255,255,255,.45);
       border-radius:16px;
+      background: rgba(255,255,255,.82);
+      border: 1px solid rgba(255,255,255,.48);
       padding:22px 18px;
+      text-align:center;
     }
 
     h1{margin:0 0 8px;font-size:32px;}
     p{margin:0 0 14px;font-size:17px;opacity:.95;}
 
-    .btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:4px;}
+    .btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:6px;}
     button{
       font-size:18px;padding:12px 18px;border:0;border-radius:999px;
       cursor:pointer;transition:transform .12s ease, filter .2s ease;
       -webkit-tap-highlight-color:transparent;
       user-select:none;
+      font-weight:850;
     }
     button:active{transform:scale(.98);}
-
     #yes{
       background:var(--pink);color:#fff;
-      box-shadow:0 12px 24px rgba(255,59,122,.28);
+      box-shadow:0 12px 26px rgba(255,59,122,.30);
     }
 
-    /* ✅ FIX: NO is now VERY visible */
     #no{
-      position:fixed;
-      left:50%;
-      top:55%;
+      position:fixed;left:50%;top:56%;
       transform:translate(-50%,-50%);
-      z-index: 9999;
-
-      background: rgba(17,24,39,0.92);
+      z-index: 99999;
+      background: rgba(17,24,39,0.94);
       color:#fff;
-
-      border: 2px solid rgba(255,255,255,0.92);
+      border: 2px solid rgba(255,255,255,0.95);
       box-shadow:
-        0 0 0 6px rgba(255,59,122,.18),
-        0 12px 30px rgba(0,0,0,.35),
-        0 0 26px rgba(255,255,255,.35);
-
-      font-weight:900;
-      min-width: 110px;
+        0 0 0 6px rgba(255,59,122,.16),
+        0 14px 36px rgba(0,0,0,.45),
+        0 0 26px rgba(255,255,255,.30);
+      min-width: 120px;
+      letter-spacing:.2px;
     }
 
     #msg{
       margin-top:14px;
       font-size:18px;
-      font-weight:900;
+      font-weight:950;
       color:var(--pink);
-      min-height:2.1em;
+      min-height:2.2em;
     }
     .hint{margin-top:8px;font-size:13px;opacity:.78;}
 
     /* Modal */
     .modal{
       position:fixed;inset:0;display:none;place-items:center;
-      background:rgba(0,0,0,.72);padding:18px;
-      z-index: 10000;
+      background:rgba(0,0,0,.76);padding:18px;
+      z-index: 100000;
     }
     .modal.show{display:grid;}
-
     .modal-card{
-      width:min(92vw, 760px);
+      width:min(92vw, 780px);
       background:#fff;border-radius:18px;
-      box-shadow:0 22px 90px rgba(0,0,0,.55);
+      box-shadow:0 26px 100px rgba(0,0,0,.58);
       overflow:hidden;
-      animation: zoomIn 520ms cubic-bezier(.2,1.2,.2,1) forwards;
-      transform: scale(.92);
+      transform: scale(.94);
       opacity: 0;
-      position: relative;
+      animation: popIn 420ms cubic-bezier(.2,1.2,.2,1) forwards;
+      position:relative;
     }
-    @keyframes zoomIn{ to{ transform:scale(1); opacity:1; } }
+    @keyframes popIn{to{transform:scale(1);opacity:1}}
 
     .modal-head{
       padding:14px 16px;
       background:rgba(255,59,122,.08);
       color:var(--pink);
-      font-weight:950;
+      font-weight:1000;
       font-size:18px;
       text-align:center;
     }
 
+    /* ✅ new extra image under the heading */
+    .extra-wrap{
+      padding: 10px 14px 0;
+      display: grid;
+      place-items: center;
+    }
+    .extra-img{
+      width: min(520px, 92%);
+      max-height: 220px;
+      object-fit: cover;
+      border-radius: 16px;
+      border: 1px solid rgba(0,0,0,.06);
+      box-shadow: 0 16px 50px rgba(0,0,0,.18);
+      opacity: 0;
+      transform: translateY(-6px) scale(.98);
+      transition: opacity 420ms ease, transform 420ms ease;
+      display: none; /* hidden until YES */
+    }
+    .extra-img.show{
+      display: block;
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
     .stage{
       position:relative;
-      width:min(72vw, 460px);
-      height:min(60vh, 460px);
+      width:min(72vw, 480px);
+      height:min(60vh, 480px);
       margin: 0 auto;
-      display:grid;
-      place-items:center;
+      display:grid;place-items:center;
       padding:12px;
     }
 
-    /* Gift box */
     .box-wrap{
       position:relative;
       width:190px;height:150px;
       transform:translateY(12px);
-      z-index: 2;
+      z-index:3;
     }
     .box{
       position:absolute;left:0;right:0;bottom:0;margin:auto;
@@ -180,55 +194,36 @@
 
     .surprise{
       position:absolute;
-      width:min(60vw, 400px);
+      width:min(60vw, 420px);
       border-radius:16px;
       transform:translateY(80px) scale(.35);
       opacity:0;
-      box-shadow:0 22px 70px rgba(0,0,0,.40);
+      box-shadow:0 24px 80px rgba(0,0,0,.44);
       pointer-events:none;
     }
 
-    .shake{ animation:shake .55s ease-in-out 1; }
+    .shake{ animation:shake .52s ease-in-out 1; }
     @keyframes shake{
       0%{transform:translateY(12px) rotate(0deg)}
-      15%{transform:translateY(10px) rotate(-2deg)}
-      30%{transform:translateY(14px) rotate(2deg)}
-      45%{transform:translateY(10px) rotate(-2deg)}
-      60%{transform:translateY(14px) rotate(2deg)}
-      75%{transform:translateY(11px) rotate(-1deg)}
+      20%{transform:translateY(10px) rotate(-2deg)}
+      40%{transform:translateY(14px) rotate(2deg)}
+      60%{transform:translateY(10px) rotate(-2deg)}
+      80%{transform:translateY(14px) rotate(2deg)}
       100%{transform:translateY(12px) rotate(0deg)}
     }
-    .open .lid{ animation:lidOpen .75s cubic-bezier(.2,.9,.2,1) forwards; }
+    .open .lid{ animation:lidOpen .70s cubic-bezier(.2,.9,.2,1) forwards; }
     @keyframes lidOpen{
       0%{transform:translateY(0) rotateX(0deg)}
-      40%{transform:translateY(-6px) rotateX(35deg)}
-      100%{transform:translateY(-10px) rotateX(70deg)}
+      100%{transform:translateY(-10px) rotateX(72deg)}
     }
-    .open .surprise{ animation:popOut .9s cubic-bezier(.12,1.15,.25,1) forwards; }
+    .open .surprise{ animation:popOut .88s cubic-bezier(.12,1.15,.25,1) forwards; }
     @keyframes popOut{
       0%{opacity:0;transform:translateY(80px) scale(.35)}
-      55%{opacity:1;transform:translateY(-125px) scale(1.12)}
-      80%{opacity:1;transform:translateY(-110px) scale(.98)}
-      100%{opacity:1;transform:translateY(-116px) scale(1)}
+      55%{opacity:1;transform:translateY(-128px) scale(1.12)}
+      100%{opacity:1;transform:translateY(-118px) scale(1)}
     }
 
-    .modal-actions{
-      display:flex;gap:10px;justify-content:center;
-      padding:14px 16px;background:#fff;
-      position: relative;
-      z-index: 2;
-    }
-    .pill{
-      border:0;border-radius:999px;
-      padding:10px 16px;
-      font-weight:850;
-      cursor:pointer;
-    }
-    .pill.dark{ background:var(--ink); color:#fff; }
-    .pill.light{ background:rgba(17,24,39,.10); color:var(--ink); }
-
-    /* FX */
-    .fx{ position:absolute; inset:0; pointer-events:none; overflow:hidden; z-index: 1; }
+    .fx{ position:absolute; inset:0; pointer-events:none; overflow:hidden; z-index:2; }
     .confetti, .heart, .spark{
       position:absolute;left:50%;top:50%;
       transform:translate(-50%,-50%);
@@ -236,75 +231,73 @@
     }
     .confetti{ width:10px;height:14px;border-radius:3px;background:var(--c, #ff3b7a); }
     .heart{ font-size:22px; filter: drop-shadow(0 10px 10px rgba(0,0,0,.18)); }
-    .spark{ width:8px;height:8px;border-radius:999px;background:rgba(255,255,255,.95); filter: blur(.2px); }
+    .spark{ width:8px;height:8px;border-radius:999px;background:rgba(255,255,255,.95); }
 
-    .burst .confetti{ opacity:1; animation:fly 980ms ease-out forwards; }
+    .burst .confetti{ opacity:1; animation:fly 900ms ease-out forwards; }
     @keyframes fly{
       0%{transform:translate(-50%,-50%) translate(0,0) rotate(0deg);opacity:1;}
       100%{transform:translate(-50%,-50%) translate(var(--dx),var(--dy)) rotate(720deg);opacity:0;}
     }
-
-    .rise .heart{ opacity:1; animation:rise 2200ms ease-out forwards; }
+    .rise .heart{ opacity:1; animation:rise 2000ms ease-out forwards; }
     @keyframes rise{
       0%{transform:translate(-50%,-50%) translate(0,0) scale(.9);opacity:0;}
-      12%{opacity:1;}
+      15%{opacity:1;}
       100%{transform:translate(-50%,-50%) translate(var(--hx), var(--hy)) scale(1.15);opacity:0;}
     }
-
-    .twinkle .spark{ opacity:1; animation:twinkle 1400ms ease-out forwards; }
+    .twinkle .spark{ opacity:1; animation:twinkle 1200ms ease-out forwards; }
     @keyframes twinkle{
       0%{transform:translate(-50%,-50%) scale(.4);opacity:0;}
       20%{opacity:1;}
       100%{transform:translate(-50%,-50%) translate(var(--sx2),var(--sy2)) scale(1.2);opacity:0;}
     }
 
-    /* ✅ SUPER COOL ENDING */
+    .modal-actions{
+      display:flex;gap:10px;justify-content:center;
+      padding:14px 16px;background:#fff;
+      position:relative;z-index:4;
+    }
+    .pill{border:0;border-radius:999px;padding:10px 16px;font-weight:900;cursor:pointer;}
+    .pill.dark{ background:var(--ink); color:#fff; }
+    .pill.light{ background:rgba(17,24,39,.10); color:var(--ink); }
+
+    /* Ending: credits roll */
     .ending{
       position:absolute;inset:0;
-      display:none;
-      place-items:center;
+      display:none;place-items:center;
       background:
-        radial-gradient(circle at 50% 35%, rgba(255,59,122,.28), transparent 55%),
-        linear-gradient(180deg, rgba(17,24,39,.92), rgba(17,24,39,.72));
-      z-index: 5;
-      padding: 18px;
-      text-align:center;
+        radial-gradient(circle at 50% 35%, rgba(255,59,122,.28), transparent 58%),
+        linear-gradient(180deg, rgba(17,24,39,.94), rgba(17,24,39,.76));
+      z-index:10;
+      overflow:hidden;
     }
     .ending.show{ display:grid; }
 
-    .ending-card{
-      width:min(680px, 92vw);
-      border-radius:18px;
-      padding:22px 18px;
-      background: rgba(255,255,255,.10);
-      border: 1px solid rgba(255,255,255,.22);
-      backdrop-filter: blur(10px);
-      box-shadow: 0 30px 90px rgba(0,0,0,.55);
+    .credits{
+      width:min(720px, 92vw);
       color:#fff;
+      text-align:center;
+      padding: 10px 18px;
     }
     .neon{
-      font-size:30px;
-      font-weight:1000;
-      letter-spacing:.2px;
-      text-shadow:
-        0 0 10px rgba(255,59,122,.55),
-        0 0 25px rgba(255,59,122,.35),
-        0 0 45px rgba(255,59,122,.25);
-      margin:0 0 8px;
+      font-size:30px;font-weight:1000;
+      text-shadow:0 0 12px rgba(255,59,122,.55),0 0 30px rgba(255,59,122,.30);
+      margin:0 0 10px;
     }
-    .sub{
-      margin:0 0 14px;
-      font-size:16px;
-      opacity:.92;
+    .credits-roll{
+      margin:0 auto;
+      width:min(520px, 92vw);
+      opacity:.96;
+      font-weight:800;
+      line-height:1.65;
+      transform: translateY(120%);
+      animation: roll 12s linear forwards;
     }
-    .type{
-      margin:0 auto 16px;
-      max-width: 520px;
-      font-size:15px;
-      line-height:1.45;
-      opacity:.95;
-      min-height: 3.1em;
+    @keyframes roll{
+      from{ transform: translateY(120%); }
+      to{ transform: translateY(-140%); }
     }
+    .small{font-size:14px;font-weight:700;opacity:.92;margin-top:10px;}
+    .credits .buttons{display:flex;gap:10px;justify-content:center;margin-top:16px;flex-wrap:wrap;}
   </style>
 </head>
 
@@ -330,7 +323,13 @@
 
   <div class="modal" id="modal">
     <div class="modal-card">
-      <div class="modal-head" id="modalHead">🎬 Scene: “YES” — take one!</div>
+      <div class="modal-head" id="modalHead">🎁 Surprise unlocked for Ashima Singh!</div>
+
+    <!-- ✅ extra GIF under heading -->
+<div class="extra-wrap">
+  <img id="extraImg" class="extra-img" src="./extra.gif" alt="Extra surprise 💖" />
+</div>
+
 
       <div class="stage">
         <div class="fx" id="fx"></div>
@@ -343,13 +342,31 @@
           <img class="surprise" id="surpriseImg" src="./yes.jpg" alt="A surprise 💖" />
         </div>
 
-        <!-- SUPER COOL ENDING layer -->
         <div class="ending" id="ending">
-          <div class="ending-card">
-            <h2 class="neon">🎆 THE ENDING SCENE 🎆</h2>
-            <p class="sub">Ashima Singh… officially locked in for Valemtimes 💘</p>
-            <p class="type" id="typeText"></p>
-            <div class="modal-actions" style="background:transparent;padding:0;gap:12px;">
+          <div class="credits">
+            <div class="neon">🎞️ END CREDITS 🎞️</div>
+            <div class="credits-roll" id="creditsRoll">
+              <div>Starring</div>
+              <div>ASHIMA SINGH 💖</div>
+              <div>&</div>
+              <div>THE ONLY CORRECT ANSWER: YES ✅</div>
+              <br/>
+              <div>Special Appearance</div>
+              <div>The “No” Button (ran away)</div>
+              <br/>
+              <div>Director</div>
+              <div>Destiny 😌</div>
+              <br/>
+              <div>Music</div>
+              <div>music.mp3 🎶</div>
+              <br/>
+              <div>THE END</div>
+              <div>💘</div>
+            </div>
+
+            <div class="small">Tip: Take a screenshot. This scene is iconic.</div>
+
+            <div class="buttons">
               <button class="pill light" id="replay">Replay</button>
               <button class="pill dark" id="closeEnding">Close</button>
             </div>
@@ -381,10 +398,12 @@
     const closeModal = document.getElementById("closeModal");
     const modalHead = document.getElementById("modalHead");
 
+    const extraImg = document.getElementById("extraImg");
+
     const ending = document.getElementById("ending");
-    const typeText = document.getElementById("typeText");
     const replay = document.getElementById("replay");
     const closeEnding = document.getElementById("closeEnding");
+    const creditsRoll = document.getElementById("creditsRoll");
 
     let dark = 0.92;
     let attempts = 0;
@@ -403,8 +422,6 @@
       "Ashima Singh, ab toh bas YES hi bacha hai 💖"
     ];
 
-    function setMsg(t){ msg.textContent = t; }
-
     function setSpotlight(xPct, yPct){
       spotlight.style.setProperty("--sx", xPct + "%");
       spotlight.style.setProperty("--sy", yPct + "%");
@@ -413,12 +430,14 @@
       dark = Math.max(0, Math.min(0.95, v));
       spotlight.style.setProperty("--dark", dark.toFixed(3));
     }
+    function setMsg(t){ msg.textContent = t; }
 
+    // init
     setDarkness(dark);
-    setSpotlight(50, 40);
+    setSpotlight(50, 42);
 
     function brighten(){
-      setDarkness(dark - 0.10);
+      setDarkness(dark - 0.085);
       if (dark <= 0.65 && dark > 0.40) hint.textContent = "Lighting bhi romance support kar rahi hai ✨";
       if (dark <= 0.40) hint.textContent = "Bas ab… hero ko YES chahiye 😭💘";
     }
@@ -429,24 +448,24 @@
       attempts++;
       setMsg(dialogues[attempts % dialogues.length]);
 
-      const pad = 14;
+      const pad = 16;
       const w = window.innerWidth;
       const h = window.innerHeight;
 
-      // evolve No: shrink + spin + then disable
       if (attempts >= 8) {
-        noBtn.style.padding = "8px 12px";
-        noBtn.style.fontSize = "15px";
         noBtn.textContent = "No? 😅";
+        noBtn.style.minWidth = "108px";
+        noBtn.style.padding = "10px 14px";
+        noBtn.style.fontSize = "16px";
       }
       if (attempts >= 6) {
-        noBtn.style.transform = "translate(-50%,-50%) rotate(" + (attempts * 8) + "deg)";
+        noBtn.style.transform = "translate(-50%,-50%) rotate(" + (attempts * 6) + "deg)";
       }
 
       const bw = noBtn.offsetWidth;
       const bh = noBtn.offsetHeight;
-      const safeW = Math.max(60, w - bw - pad * 2);
-      const safeH = Math.max(60, h - bh - pad * 2);
+      const safeW = Math.max(80, w - bw - pad * 2);
+      const safeH = Math.max(80, h - bh - pad * 2);
 
       const x = Math.floor(Math.random() * safeW) + pad;
       const y = Math.floor(Math.random() * safeH) + pad;
@@ -460,7 +479,7 @@
       if (attempts >= 14) {
         noDisabled = true;
         noBtn.textContent = "NO not available 🚫";
-        noBtn.style.transform = "none";
+        noBtn.style.transform = "translate(-50%,-50%)";
         noBtn.style.filter = "grayscale(1)";
         setMsg("System: ‘No’ option removed for romantic reasons. ✅");
         hint.textContent = "Now the only button left is… YES 😌";
@@ -472,136 +491,92 @@
     noBtn.addEventListener("touchstart", (e) => { e.preventDefault(); moveNoButton(); }, { passive:false });
     noBtn.addEventListener("click", (e) => { e.preventDefault(); moveNoButton(); });
 
+    // FX (auto-clean)
     function clearFX(){ fx.innerHTML = ""; }
-
     function confettiBurst(){
       const colors = ["#ff3b7a","#ff7aa6","#ffd1e2","#ffffff","#111827","#ffb703","#fb8500"];
-      const pieces = 36;
+      const pieces = 28;
       fx.classList.remove("burst");
       for (let i=0;i<pieces;i++){
         const c = document.createElement("div");
         c.className = "confetti";
         c.style.background = colors[Math.floor(Math.random()*colors.length)];
         c.style.setProperty("--dx", (Math.random()*520 - 260) + "px");
-        c.style.setProperty("--dy", (Math.random()*-420 - 80) + "px");
+        c.style.setProperty("--dy", (Math.random()*-420 - 90) + "px");
         c.style.left = "50%";
-        c.style.top  = "54%";
+        c.style.top  = "55%";
         c.style.animationDelay = (i*8) + "ms";
         fx.appendChild(c);
       }
       fx.classList.add("burst");
-      setTimeout(()=> fx.classList.remove("burst"), 1100);
+      setTimeout(() => clearFX(), 1100);
     }
-
     function heartRise(){
-      const hearts = 18;
+      const hearts = 14;
       fx.classList.remove("rise");
       for (let i=0;i<hearts;i++){
         const h = document.createElement("div");
         h.className = "heart";
         h.textContent = "💖";
         h.style.setProperty("--hx", (Math.random()*520 - 260) + "px");
-        h.style.setProperty("--hy", (Math.random()*-520 - 180) + "px");
+        h.style.setProperty("--hy", (Math.random()*-520 - 200) + "px");
         h.style.left = (30 + Math.random()*40) + "%";
         h.style.top  = (62 + Math.random()*10) + "%";
-        h.style.animationDelay = (i*70) + "ms";
+        h.style.animationDelay = (i*85) + "ms";
         fx.appendChild(h);
       }
       fx.classList.add("rise");
-      setTimeout(()=> fx.classList.remove("rise"), 2400);
+      setTimeout(() => clearFX(), 2300);
     }
-
     function sparkleStorm(){
-      const sparks = 26;
+      const sparks = 18;
       fx.classList.remove("twinkle");
       for (let i=0;i<sparks;i++){
         const s = document.createElement("div");
         s.className = "spark";
-        s.style.left = (10 + Math.random()*80) + "%";
-        s.style.top  = (15 + Math.random()*70) + "%";
-        s.style.setProperty("--sx2", (Math.random()*260 - 130) + "px");
-        s.style.setProperty("--sy2", (Math.random()*-260 - 80) + "px");
-        s.style.animationDelay = (i*35) + "ms";
+        s.style.left = (12 + Math.random()*76) + "%";
+        s.style.top  = (18 + Math.random()*66) + "%";
+        s.style.setProperty("--sx2", (Math.random()*240 - 120) + "px");
+        s.style.setProperty("--sy2", (Math.random()*-240 - 90) + "px");
+        s.style.animationDelay = (i*45) + "ms";
         fx.appendChild(s);
       }
       fx.classList.add("twinkle");
-      setTimeout(()=> fx.classList.remove("twinkle"), 1600);
+      setTimeout(() => clearFX(), 1400);
     }
 
+    // Music fade-in
     function fadeInMusic(){
       music.volume = 0;
       let v = 0;
-      const step = 0.04;
-      const interval = 120;
-      const maxV = 0.90;
+      const maxV = 0.9;
       const timer = setInterval(() => {
-        v = Math.min(maxV, v + step);
+        v = Math.min(maxV, v + 0.04);
         music.volume = v;
         if (v >= maxV) clearInterval(timer);
-      }, interval);
-    }
-
-    // typewriter for ending
-    function typeWriter(text){
-      typeText.textContent = "";
-      let i = 0;
-      const timer = setInterval(() => {
-        typeText.textContent += text[i] || "";
-        i++;
-        if (i > text.length) clearInterval(timer);
-      }, 22);
+      }, 120);
     }
 
     function showEnding(){
       ending.classList.add("show");
-      sparkleStorm();
-      typeWriter("In today’s episode of ‘Ashima vs No Button’… Ashima wins 🏆💖  \nNow accept your crown: Queen of Valemtimes 👑");
-    }
-
-    function resetAll(){
-      // reset UI
-      ending.classList.remove("show");
-      modal.classList.remove("show");
-      noBtn.style.display = "";
-      yesBtn.style.display = "";
-      noBtn.textContent = "No 🙃";
-      noBtn.style.padding = "";
-      noBtn.style.fontSize = "";
-      noBtn.style.filter = "";
-      noBtn.style.transform = "translate(-50%,-50%)";
-      noDisabled = false;
-      attempts = 0;
-
-      // reset lighting
-      setSpotlight(50, 40);
-      setDarkness(0.92);
-      hint.textContent = "Filmy mode ON 🎬 — try clicking “No” for dialogues.";
-      msg.textContent = "";
-
-      // reset gift
-      boxWrap.classList.remove("open","shake");
-      clearFX();
-
-      // stop music optional
-      music.pause();
-      music.currentTime = 0;
-
-      setTimeout(moveNoButton, 250);
+      creditsRoll.style.animation = "none";
+      void creditsRoll.offsetWidth;
+      creditsRoll.style.animation = "";
     }
 
     yesBtn.addEventListener("click", async () => {
       setMsg("👏 CUT! Perfect take. Ashima said YES 💖🥹");
       modalHead.textContent = "🎁 Surprise unlocked for Ashima Singh!";
-
       modal.classList.add("show");
       noBtn.style.display = "none";
       yesBtn.style.display = "none";
 
-      // brighten on YES
-      setSpotlight(50, 40);
+      // ✅ show extra image under heading
+      extraImg.classList.add("show");
+
+      setSpotlight(50, 42);
       setDarkness(0.10);
 
-      // play music
       try {
         music.currentTime = 0;
         await music.play();
@@ -611,7 +586,6 @@
         toggleMusic.textContent = "Play music";
       }
 
-      // restart gift
       boxWrap.classList.remove("open","shake");
       void boxWrap.offsetWidth;
       boxWrap.classList.add("shake");
@@ -619,12 +593,11 @@
       setTimeout(() => {
         boxWrap.classList.add("open");
         confettiBurst();
-        heartRise();
-        sparkleStorm();
+        setTimeout(heartRise, 250);
+        setTimeout(sparkleStorm, 420);
       }, 520);
 
-      // ✅ SUPER COOL ending appears after a moment
-      setTimeout(showEnding, 3400);
+      setTimeout(showEnding, 3600);
     });
 
     toggleMusic.addEventListener("click", async () => {
@@ -637,13 +610,44 @@
       }
     });
 
+    function resetAll(){
+      ending.classList.remove("show");
+      modal.classList.remove("show");
+
+      // hide extra image again
+      extraImg.classList.remove("show");
+
+      noBtn.style.display = "";
+      yesBtn.style.display = "";
+      noBtn.textContent = "No 🙃";
+      noBtn.style.minWidth = "";
+      noBtn.style.padding = "";
+      noBtn.style.fontSize = "";
+      noBtn.style.filter = "";
+      noBtn.style.transform = "translate(-50%,-50%)";
+      noDisabled = false;
+      attempts = 0;
+
+      setSpotlight(50, 42);
+      setDarkness(0.92);
+      hint.textContent = "Filmy mode ON 🎬 — try clicking “No” for dialogues.";
+      msg.textContent = "";
+
+      boxWrap.classList.remove("open","shake");
+      clearFX();
+
+      music.pause();
+      music.currentTime = 0;
+
+      setTimeout(moveNoButton, 250);
+    }
+
     closeModal.addEventListener("click", () => modal.classList.remove("show"));
     modal.addEventListener("click", (e) => { if (e.target === modal) modal.classList.remove("show"); });
 
     replay.addEventListener("click", resetAll);
     closeEnding.addEventListener("click", () => ending.classList.remove("show"));
 
-    // initial drama
     setTimeout(moveNoButton, 250);
     window.addEventListener("resize", () => setTimeout(moveNoButton, 50));
   </script>
