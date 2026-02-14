@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>AI Summit Briefing</title>
 
-  <!-- Preview metadata (AI Summit themed) -->
+  <!-- AI Summit themed preview -->
   <meta name="description" content="AI Summit Briefing: interactive demo page — keynote readiness check, UX micro-interactions, and a tiny surprise." />
   <meta property="og:title" content="AI Summit Briefing" />
   <meta property="og:description" content="Interactive AI Summit demo: micro-interactions, spotlight UI, and a fun reveal." />
@@ -24,22 +24,36 @@
       overflow:hidden;background:#000;
     }
 
-    .bg{position:fixed;inset:0;background:url("./bg.gif") repeat;background-size:220px;z-index:-6;filter:saturate(1.05);}
+    /* Background */
+    .bg{
+      position:fixed;inset:0;
+      background:url("./bg.gif") repeat;
+      background-size:220px;
+      z-index:-6;
+      filter:saturate(1.05);
+    }
+
+    /* Cinematic spotlight */
     .spotlight{
       position:fixed;inset:0;z-index:-5;
-      background: radial-gradient(circle at var(--sx, 50%) var(--sy, 42%),
-        rgba(255,190,220, calc(0.18 + (1 - var(--dark, 0.92)) * 0.42)) 0%,
-        rgba(255,120,170, calc(0.10 + (1 - var(--dark, 0.92)) * 0.28)) 26%,
-        rgba(0,0,0, var(--dark, 0.92)) 64%,
-        rgba(0,0,0, var(--dark, 0.92)) 100%);
+      background:
+        radial-gradient(circle at var(--sx, 50%) var(--sy, 42%),
+          rgba(255,190,220, calc(0.18 + (1 - var(--dark, 0.92)) * 0.42)) 0%,
+          rgba(255,120,170, calc(0.10 + (1 - var(--dark, 0.92)) * 0.28)) 26%,
+          rgba(0,0,0, var(--dark, 0.92)) 64%,
+          rgba(0,0,0, var(--dark, 0.92)) 100%);
       transition: background 520ms ease;
     }
+
     .tint{
       position:fixed;inset:0;z-index:-4;
-      background: radial-gradient(circle at 50% 20%, rgba(255,59,122,.16), transparent 55%), rgba(255,240,248,.34);
+      background:
+        radial-gradient(circle at 50% 20%, rgba(255,59,122,.16), transparent 55%),
+        rgba(255,240,248,.34);
       backdrop-filter: blur(2px);
     }
 
+    /* Glass card */
     .card{
       width:min(640px, 92vw);
       border-radius:18px;
@@ -51,10 +65,13 @@
       animation: floaty 3.2s ease-in-out infinite;
     }
     @keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+
     .card-inner{
-      border-radius:16px;background: rgba(255,255,255,.82);
+      border-radius:16px;
+      background: rgba(255,255,255,.82);
       border: 1px solid rgba(255,255,255,.48);
-      padding:22px 18px;text-align:center;
+      padding:22px 18px;
+      text-align:center;
     }
 
     h1{margin:0 0 8px;font-size:32px;}
@@ -64,72 +81,176 @@
     button{
       font-size:18px;padding:12px 18px;border:0;border-radius:999px;
       cursor:pointer;transition:transform .12s ease, filter .2s ease;
-      -webkit-tap-highlight-color:transparent;user-select:none;font-weight:850;
+      -webkit-tap-highlight-color:transparent;
+      user-select:none;
+      font-weight:850;
     }
     button:active{transform:scale(.98);}
-    #yes{background:var(--pink);color:#fff;box-shadow:0 12px 26px rgba(255,59,122,.30);}
+    #yes{
+      background:var(--pink);color:#fff;
+      box-shadow:0 12px 26px rgba(255,59,122,.30);
+    }
     #yes:hover{filter:brightness(1.04);}
 
-    /* NO button: always visible + always on top */
+    /* NO button: always visible, always on top */
     #no{
-      position:fixed;left:50%;top:56%;
+      position:fixed;
+      left:50%;
+      top:56%;
       transform:translate(-50%,-50%);
-      z-index:2147483647; isolation:isolate;
-      background: rgba(17,24,39,0.94); color:#fff;
+      z-index: 2147483647;
+      isolation:isolate;
+
+      background: rgba(17,24,39,0.94);
+      color:#fff;
       border: 2px solid rgba(255,255,255,0.95);
-      box-shadow: 0 0 0 6px rgba(255,59,122,.16), 0 14px 36px rgba(0,0,0,.45), 0 0 26px rgba(255,255,255,.30);
-      min-width: 120px; letter-spacing:.2px;
+
+      box-shadow:
+        0 0 0 6px rgba(255,59,122,.16),
+        0 14px 36px rgba(0,0,0,.45),
+        0 0 26px rgba(255,255,255,.30);
+
+      min-width: 120px;
+      letter-spacing:.2px;
     }
 
-    #msg{margin-top:14px;font-size:18px;font-weight:950;color:var(--pink);min-height:2.2em;}
+    #msg{
+      margin-top:14px;
+      font-size:18px;
+      font-weight:950;
+      color:var(--pink);
+      min-height:2.2em;
+    }
     .hint{margin-top:8px;font-size:13px;opacity:.78;}
 
     /* Extra GIF under YES message */
     #extraGifMsg{
-      display:none;margin:10px auto 0;width:min(340px,82%);
-      border-radius:14px;border:1px solid rgba(0,0,0,.06);
-      box-shadow:0 16px 50px rgba(0,0,0,.18);
-      opacity:0;transform:translateY(-6px) scale(.98);
-      transition:opacity 420ms ease, transform 420ms ease;
+      display:none;
+      margin: 10px auto 0;
+      width: min(340px, 82%);
+      border-radius: 14px;
+      border: 1px solid rgba(0,0,0,.06);
+      box-shadow: 0 16px 50px rgba(0,0,0,.18);
+      opacity: 0;
+      transform: translateY(-6px) scale(.98);
+      transition: opacity 420ms ease, transform 420ms ease;
     }
-    #extraGifMsg.show{display:block;opacity:1;transform:translateY(0) scale(1);}
+    #extraGifMsg.show{
+      display:block;
+      opacity:1;
+      transform: translateY(0) scale(1);
+    }
 
+    /* Confirmation line + button (appears ONLY after modal is closed) */
+    #confirmLine{
+      display:none;
+      margin-top:10px;
+      font-weight:950;
+      color:var(--pink);
+    }
+    #sendConfirmInline{
+      display:none;
+      margin-top:10px;
+      padding:12px 18px;
+      border-radius:999px;
+      border:0;
+      font-weight:950;
+      background:#111827;
+      color:white;
+      cursor:pointer;
+      box-shadow: 0 12px 26px rgba(0,0,0,.22);
+    }
+
+    /* Replay available anytime */
     .replay-main{margin-top:12px;display:flex;justify-content:center;}
     #replayMain{
-      background: rgba(17,24,39,.10); color: var(--ink);
+      background: rgba(17,24,39,.10);
+      color: var(--ink);
       border: 1px solid rgba(17,24,39,.12);
-      padding: 10px 16px; border-radius: 999px; font-weight: 900; cursor:pointer;
+      padding: 10px 16px;
+      border-radius: 999px;
+      font-weight: 900;
+      cursor:pointer;
     }
 
     /* Modal */
-    .modal{position:fixed;inset:0;display:none;place-items:center;background:rgba(0,0,0,.76);padding:18px;z-index:100000;}
+    .modal{
+      position:fixed;inset:0;display:none;place-items:center;
+      background:rgba(0,0,0,.76);padding:18px;
+      z-index: 100000;
+    }
     .modal.show{display:grid;}
     .modal-card{
-      width:min(92vw, 780px);background:#fff;border-radius:18px;
-      box-shadow:0 26px 100px rgba(0,0,0,.58);overflow:hidden;
-      transform:scale(.94);opacity:0;animation:popIn 420ms cubic-bezier(.2,1.2,.2,1) forwards;
+      width:min(92vw, 780px);
+      background:#fff;border-radius:18px;
+      box-shadow:0 26px 100px rgba(0,0,0,.58);
+      overflow:hidden;
+      transform: scale(.94);
+      opacity: 0;
+      animation: popIn 420ms cubic-bezier(.2,1.2,.2,1) forwards;
       position:relative;
     }
     @keyframes popIn{to{transform:scale(1);opacity:1}}
-    .modal-head{padding:14px 16px;background:rgba(255,59,122,.08);color:var(--pink);font-weight:1000;font-size:18px;text-align:center;}
+
+    .modal-head{
+      padding:14px 16px;
+      background:rgba(255,59,122,.08);
+      color:var(--pink);
+      font-weight:1000;
+      font-size:18px;
+      text-align:center;
+    }
 
     .stage{
-      position:relative;width:min(72vw, 480px);height:min(60vh, 480px);
-      margin:0 auto;display:grid;place-items:center;padding:12px;
+      position:relative;
+      width:min(72vw, 480px);
+      height:min(60vh, 480px);
+      margin: 0 auto;
+      display:grid;place-items:center;
+      padding:12px;
     }
 
     /* Gift box */
-    .box-wrap{position:relative;width:190px;height:150px;transform:translateY(12px);z-index:3;}
-    .box{position:absolute;left:0;right:0;bottom:0;margin:auto;width:190px;height:120px;border-radius:14px;background:linear-gradient(180deg,#ff7aa6,#ff3b7a);box-shadow:0 18px 30px rgba(0,0,0,.22);}
-    .lid{position:absolute;left:0;right:0;top:0;margin:auto;width:200px;height:54px;border-radius:14px;background:linear-gradient(180deg,#ffd1e2,#ff86b3);box-shadow:0 10px 18px rgba(0,0,0,.18);transform-origin:50% 100%;transform:translateY(0) rotateX(0deg);}
+    .box-wrap{
+      position:relative;
+      width:190px;height:150px;
+      transform:translateY(12px);
+      z-index:3;
+    }
+    .box{
+      position:absolute;left:0;right:0;bottom:0;margin:auto;
+      width:190px;height:120px;border-radius:14px;
+      background:linear-gradient(180deg,#ff7aa6,#ff3b7a);
+      box-shadow:0 18px 30px rgba(0,0,0,.22);
+    }
+    .lid{
+      position:absolute;left:0;right:0;top:0;margin:auto;
+      width:200px;height:54px;border-radius:14px;
+      background:linear-gradient(180deg,#ffd1e2,#ff86b3);
+      box-shadow:0 10px 18px rgba(0,0,0,.18);
+      transform-origin:50% 100%;
+      transform:translateY(0) rotateX(0deg);
+    }
     .bow{position:absolute;left:50%;top:-10px;width:80px;height:50px;transform:translateX(-50%);}
-    .bow:before,.bow:after{content:"";position:absolute;top:10px;width:40px;height:26px;border-radius:20px 20px 20px 4px;background:rgba(255,255,255,.90);}
+    .bow:before,.bow:after{
+      content:"";position:absolute;top:10px;width:40px;height:26px;
+      border-radius:20px 20px 20px 4px;background:rgba(255,255,255,.90);
+    }
     .bow:before{left:0;transform:rotate(-12deg);}
     .bow:after{right:0;transform:scaleX(-1) rotate(-12deg);}
     .knot{position:absolute;left:50%;top:20px;width:16px;height:16px;border-radius:999px;background:#fff;transform:translateX(-50%);}
 
-    .surprise{position:absolute;width:min(60vw,420px);border-radius:16px;transform:translateY(80px) scale(.35);opacity:0;box-shadow:0 24px 80px rgba(0,0,0,.44);pointer-events:none;}
-    .shake{animation:shake .52s ease-in-out 1;}
+    .surprise{
+      position:absolute;
+      width:min(60vw, 420px);
+      border-radius:16px;
+      transform:translateY(80px) scale(.35);
+      opacity:0;
+      box-shadow:0 24px 80px rgba(0,0,0,.44);
+      pointer-events:none;
+    }
+
+    .shake{ animation:shake .52s ease-in-out 1; }
     @keyframes shake{
       0%{transform:translateY(12px) rotate(0deg)}
       20%{transform:translateY(10px) rotate(-2deg)}
@@ -138,9 +259,12 @@
       80%{transform:translateY(14px) rotate(2deg)}
       100%{transform:translateY(12px) rotate(0deg)}
     }
-    .open .lid{animation:lidOpen .70s cubic-bezier(.2,.9,.2,1) forwards;}
-    @keyframes lidOpen{0%{transform:translateY(0) rotateX(0deg)}100%{transform:translateY(-10px) rotateX(72deg)}}
-    .open .surprise{animation:popOut .88s cubic-bezier(.12,1.15,.25,1) forwards;}
+    .open .lid{ animation:lidOpen .70s cubic-bezier(.2,.9,.2,1) forwards; }
+    @keyframes lidOpen{
+      0%{transform:translateY(0) rotateX(0deg)}
+      100%{transform:translateY(-10px) rotateX(72deg)}
+    }
+    .open .surprise{ animation:popOut .88s cubic-bezier(.12,1.15,.25,1) forwards; }
     @keyframes popOut{
       0%{opacity:0;transform:translateY(80px) scale(.35)}
       55%{opacity:1;transform:translateY(-128px) scale(1.12)}
@@ -148,86 +272,81 @@
     }
 
     /* FX */
-    .fx{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:2;}
-    .confetti,.heart,.spark{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);opacity:0;}
-    .confetti{width:10px;height:14px;border-radius:3px;background:var(--c,#ff3b7a);}
-    .heart{font-size:22px;filter:drop-shadow(0 10px 10px rgba(0,0,0,.18));}
-    .spark{width:8px;height:8px;border-radius:999px;background:rgba(255,255,255,.95);}
-    .burst .confetti{opacity:1;animation:fly 900ms ease-out forwards;}
-    @keyframes fly{0%{transform:translate(-50%,-50%) translate(0,0) rotate(0deg);opacity:1;}100%{transform:translate(-50%,-50%) translate(var(--dx),var(--dy)) rotate(720deg);opacity:0;}}
-    .rise .heart{opacity:1;animation:rise 2000ms ease-out forwards;}
-    @keyframes rise{0%{transform:translate(-50%,-50%) translate(0,0) scale(.9);opacity:0;}15%{opacity:1;}100%{transform:translate(-50%,-50%) translate(var(--hx),var(--hy)) scale(1.15);opacity:0;}}
-    .twinkle .spark{opacity:1;animation:twinkle 1200ms ease-out forwards;}
-    @keyframes twinkle{0%{transform:translate(-50%,-50%) scale(.4);opacity:0;}20%{opacity:1;}100%{transform:translate(-50%,-50%) translate(var(--sx2),var(--sy2)) scale(1.2);opacity:0;}}
+    .fx{ position:absolute; inset:0; pointer-events:none; overflow:hidden; z-index:2; }
+    .confetti, .heart, .spark{
+      position:absolute;left:50%;top:50%;
+      transform:translate(-50%,-50%);
+      opacity:0;
+    }
+    .confetti{ width:10px;height:14px;border-radius:3px;background:var(--c, #ff3b7a); }
+    .heart{ font-size:22px; filter: drop-shadow(0 10px 10px rgba(0,0,0,.18)); }
+    .spark{ width:8px;height:8px;border-radius:999px;background:rgba(255,255,255,.95); }
 
-    .modal-actions{display:flex;gap:10px;justify-content:center;padding:14px 16px;background:#fff;position:relative;z-index:4;}
+    .burst .confetti{ opacity:1; animation:fly 900ms ease-out forwards; }
+    @keyframes fly{
+      0%{transform:translate(-50%,-50%) translate(0,0) rotate(0deg);opacity:1;}
+      100%{transform:translate(-50%,-50%) translate(var(--dx),var(--dy)) rotate(720deg);opacity:0;}
+    }
+    .rise .heart{ opacity:1; animation:rise 2000ms ease-out forwards; }
+    @keyframes rise{
+      0%{transform:translate(-50%,-50%) translate(0,0) scale(.9);opacity:0;}
+      15%{opacity:1;}
+      100%{transform:translate(-50%,-50%) translate(var(--hx), var(--hy)) scale(1.15);opacity:0;}
+    }
+    .twinkle .spark{ opacity:1; animation:twinkle 1200ms ease-out forwards; }
+    @keyframes twinkle{
+      0%{transform:translate(-50%,-50%) scale(.4);opacity:0;}
+      20%{opacity:1;}
+      100%{transform:translate(-50%,-50%) translate(var(--sx2),var(--sy2)) scale(1.2);opacity:0;}
+    }
+
+    .modal-actions{
+      display:flex;gap:10px;justify-content:center;
+      padding:14px 16px;background:#fff;
+      position:relative;z-index:4;
+    }
     .pill{border:0;border-radius:999px;padding:10px 16px;font-weight:900;cursor:pointer;}
-    .pill.dark{background:var(--ink);color:#fff;}
-    .pill.light{background:rgba(17,24,39,.10);color:var(--ink);}
+    .pill.dark{ background:var(--ink); color:#fff; }
+    .pill.light{ background:rgba(17,24,39,.10); color:var(--ink); }
 
     /* Ending credits */
     .ending{
-      position:absolute;inset:0;display:none;place-items:center;
-      background:radial-gradient(circle at 50% 35%, rgba(255,59,122,.28), transparent 58%),
-               linear-gradient(180deg, rgba(17,24,39,.94), rgba(17,24,39,.76));
-      z-index:10;overflow:hidden;
+      position:absolute;inset:0;
+      display:none;place-items:center;
+      background:
+        radial-gradient(circle at 50% 35%, rgba(255,59,122,.28), transparent 58%),
+        linear-gradient(180deg, rgba(17,24,39,.94), rgba(17,24,39,.76));
+      z-index:10;
+      overflow:hidden;
     }
-    .ending.show{display:grid;}
-    .credits{width:min(720px,92vw);color:#fff;text-align:center;padding:10px 18px;}
-    .neon{font-size:30px;font-weight:1000;text-shadow:0 0 12px rgba(255,59,122,.55),0 0 30px rgba(255,59,122,.30);margin:0 0 10px;}
-    .credits-roll{margin:0 auto;width:min(520px,92vw);opacity:.96;font-weight:800;line-height:1.65;transform:translateY(120%);animation:roll 12s linear forwards;}
-    @keyframes roll{from{transform:translateY(120%);}to{transform:translateY(-140%);}}
+    .ending.show{ display:grid; }
+
+    .credits{
+      width:min(720px, 92vw);
+      color:#fff;
+      text-align:center;
+      padding: 10px 18px;
+    }
+    .neon{
+      font-size:30px;font-weight:1000;
+      text-shadow:0 0 12px rgba(255,59,122,.55),0 0 30px rgba(255,59,122,.30);
+      margin:0 0 10px;
+    }
+    .credits-roll{
+      margin:0 auto;
+      width:min(520px, 92vw);
+      opacity:.96;
+      font-weight:800;
+      line-height:1.65;
+      transform: translateY(120%);
+      animation: roll 12s linear forwards;
+    }
+    @keyframes roll{
+      from{ transform: translateY(120%); }
+      to{ transform: translateY(-140%); }
+    }
     .small{font-size:14px;font-weight:700;opacity:.92;margin-top:10px;}
     .credits .buttons{display:flex;gap:10px;justify-content:center;margin-top:16px;flex-wrap:wrap;}
-
-    /* ✅ Confirmation panel (camera + email) */
-    .confirm{
-      position:absolute;inset:0;display:none;place-items:center;
-      background:rgba(0,0,0,.72);
-      z-index:20;padding:16px;
-    }
-    .confirm.show{display:grid;}
-    .confirm-card{
-      width:min(740px,92vw);
-      background:#fff;
-      border-radius:18px;
-      overflow:hidden;
-      box-shadow:0 26px 100px rgba(0,0,0,.58);
-    }
-    .confirm-head{
-      padding:12px 14px;
-      background:rgba(17,24,39,.06);
-      font-weight:1000;
-      color:var(--ink);
-      text-align:center;
-    }
-    .confirm-body{
-      padding:14px;
-      display:grid;
-      gap:12px;
-    }
-    .camera-wrap{
-      display:grid;
-      place-items:center;
-      gap:10px;
-    }
-    video{
-      width:min(520px, 92%);
-      border-radius:16px;
-      background:#000;
-      border:1px solid rgba(0,0,0,.10);
-      box-shadow:0 14px 40px rgba(0,0,0,.18);
-    }
-    .note{
-      font-size:13px;
-      opacity:.8;
-      text-align:center;
-    }
-    .confirm-actions{
-      display:flex;gap:10px;justify-content:center;flex-wrap:wrap;
-      padding:12px 14px;
-      background:#fff;
-    }
   </style>
 </head>
 
@@ -247,7 +366,16 @@
       </div>
 
       <div id="msg"></div>
+
+      <!-- extra GIF under the YES message -->
       <img id="extraGifMsg" src="./extra.gif" alt="Extra surprise 💖" />
+
+      <!-- appears ONLY after modal is closed -->
+      <div id="confirmLine">
+        ab to confirmation officially bhej do by clicking this and sending a cute pic 🥹📸
+      </div>
+      <button id="sendConfirmInline">Send confirmation 📩</button>
+
       <div class="hint" id="hint">Filmy mode ON 🎬 — try clicking “No” for dialogues.</div>
 
       <div class="replay-main">
@@ -271,30 +399,6 @@
           <img class="surprise" id="surpriseImg" src="./yes.jpg" alt="A surprise 💖" />
         </div>
 
-        <!-- ✅ Confirmation (camera + email) overlay -->
-        <div class="confirm" id="confirm">
-          <div class="confirm-card">
-            <div class="confirm-head">Send confirmation (photo + “I do”)</div>
-            <div class="confirm-body">
-              <div class="camera-wrap">
-                <video id="cam" autoplay playsinline muted></video>
-                <div class="note">
-                  Tap <b>Start Camera</b>, then <b>Take Photo</b> (it downloads).<br/>
-                  Then tap <b>Open Email</b> to send it to <b>ayushthaosen@gmail.com</b> with your message.<br/>
-                  You’ll just attach the downloaded photo manually (browser limitation).
-                </div>
-              </div>
-            </div>
-            <div class="confirm-actions">
-              <button class="pill light" id="startCam">Start Camera</button>
-              <button class="pill light" id="takePhoto">Take Photo</button>
-              <button class="pill dark" id="openEmail">Open Email</button>
-              <button class="pill light" id="closeConfirm">Close</button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Ending credits -->
         <div class="ending" id="ending">
           <div class="credits">
             <div class="neon">🎞️ END CREDITS 🎞️</div>
@@ -309,7 +413,6 @@
             <div class="small">Tip: Screenshot this. It’s the official “demo succeeded” proof.</div>
 
             <div class="buttons">
-              <button class="pill light" id="sendConfirm">Send confirmation</button>
               <button class="pill light" id="replay">Replay</button>
               <button class="pill dark" id="closeEnding">Close</button>
             </div>
@@ -342,6 +445,8 @@
     const modalHead = document.getElementById("modalHead");
 
     const extraGifMsg = document.getElementById("extraGifMsg");
+    const confirmLine = document.getElementById("confirmLine");
+    const sendConfirmInline = document.getElementById("sendConfirmInline");
 
     const ending = document.getElementById("ending");
     const replay = document.getElementById("replay");
@@ -349,20 +454,12 @@
     const closeEnding = document.getElementById("closeEnding");
     const creditsRoll = document.getElementById("creditsRoll");
 
-    // Confirmation UI
-    const sendConfirm = document.getElementById("sendConfirm");
-    const confirm = document.getElementById("confirm");
-    const startCam = document.getElementById("startCam");
-    const takePhoto = document.getElementById("takePhoto");
-    const openEmail = document.getElementById("openEmail");
-    const closeConfirm = document.getElementById("closeConfirm");
-    const cam = document.getElementById("cam");
-
-    let camStream = null;
-
     let dark = 0.92;
     let attempts = 0;
     let noDisabled = false;
+
+    let yesAccepted = false;
+    let okToShowConfirmAfterClose = false;
 
     const dialogues = [
       "Ashima… ‘No’ toh bas trailer tha. 😌",
@@ -387,6 +484,7 @@
     }
     function setMsg(t){ msg.textContent = t; }
 
+    // init
     setDarkness(dark);
     setSpotlight(50, 42);
 
@@ -531,9 +629,34 @@
       creditsRoll.style.animation = "";
     }
 
+    function showConfirmationAfterModalClose(){
+      if (!yesAccepted || !okToShowConfirmAfterClose) return;
+      confirmLine.style.display = "block";
+      sendConfirmInline.style.display = "inline-block";
+      okToShowConfirmAfterClose = false; // show once
+    }
+
+    // ✅ Send confirmation: open email draft (NOT automatic)
+    sendConfirmInline.addEventListener("click", () => {
+      const to = "ayushthaosen@gmail.com";
+      const subject = "Valemtimes Confirmation 💖";
+      const body =
+        "I do, i am very happy you asked, <3 <3\n\n" +
+        "pls attach cute pic 🥹📸";
+      const mailto = `mailto:${to}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      window.location.href = mailto;
+    });
+
     yesBtn.addEventListener("click", async () => {
+      yesAccepted = true;
+      okToShowConfirmAfterClose = true;
+
       setMsg("👏 CUT! Perfect take. Ashima said YES 💖🥹");
       extraGifMsg.classList.add("show");
+
+      // keep confirmation hidden until modal closes
+      confirmLine.style.display = "none";
+      sendConfirmInline.style.display = "none";
 
       modalHead.textContent = "🎁 Surprise unlocked for Ashima Singh!";
       modal.classList.add("show");
@@ -571,72 +694,16 @@
       else { try { await music.play(); } catch {} toggleMusic.textContent = "Pause music"; }
     });
 
-    // ✅ Confirmation feature
-    function openConfirm(){
-      confirm.classList.add("show");
-    }
-    function closeConfirmPanel(){
-      confirm.classList.remove("show");
-      // stop camera if running
-      if (camStream) {
-        camStream.getTracks().forEach(t => t.stop());
-        camStream = null;
-      }
-      cam.srcObject = null;
-    }
-
-    sendConfirm.addEventListener("click", openConfirm);
-    closeConfirm.addEventListener("click", closeConfirmPanel);
-
-    startCam.addEventListener("click", async () => {
-      try {
-        camStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" }, audio: false });
-        cam.srcObject = camStream;
-      } catch (e) {
-        alert("Camera permission was blocked. Please allow camera access and try again.");
-      }
-    });
-
-    takePhoto.addEventListener("click", () => {
-      if (!cam.srcObject) {
-        alert("Start the camera first 🙂");
-        return;
-      }
-      const video = cam;
-      const canvas = document.createElement("canvas");
-      canvas.width = video.videoWidth || 640;
-      canvas.height = video.videoHeight || 480;
-
-      const ctx = canvas.getContext("2d");
-      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-      canvas.toBlob((blob) => {
-        if (!blob) return;
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = "valemtimes-confirmation.png";
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-        setTimeout(() => URL.revokeObjectURL(url), 1500);
-      }, "image/png", 0.95);
-    });
-
-    openEmail.addEventListener("click", () => {
-      const to = "ayushthaosen@gmail.com";
-      const subject = "Valemtimes Confirmation";
-      const body = "I do, i am very happy you asked, <3 <3";
-      const mailto = `mailto:${to}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-      window.location.href = mailto;
-    });
-
     function resetAll(){
       ending.classList.remove("show");
       modal.classList.remove("show");
-      closeConfirmPanel();
 
       extraGifMsg.classList.remove("show");
+      confirmLine.style.display = "none";
+      sendConfirmInline.style.display = "none";
+
+      yesAccepted = false;
+      okToShowConfirmAfterClose = false;
 
       noBtn.style.display = "";
       yesBtn.style.display = "";
@@ -663,8 +730,17 @@
       setTimeout(moveNoButton, 250);
     }
 
-    closeModal.addEventListener("click", () => modal.classList.remove("show"));
-    modal.addEventListener("click", (e) => { if (e.target === modal) modal.classList.remove("show"); });
+    // When modal closes, show confirmation button under the YES line
+    closeModal.addEventListener("click", () => {
+      modal.classList.remove("show");
+      showConfirmationAfterModalClose();
+    });
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) {
+        modal.classList.remove("show");
+        showConfirmationAfterModalClose();
+      }
+    });
 
     replay.addEventListener("click", resetAll);
     replayMain.addEventListener("click", resetAll);
