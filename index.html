@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Valentines</title>
+  <title>Valemtimes</title>
 
   <style>
     :root { --pink: #ff3b7a; }
@@ -17,37 +17,37 @@
       overflow: hidden;
     }
 
-    /* GIF background */
+    /* Repeating GIF background */
     .bg {
       position: fixed;
       inset: 0;
-      background: url("./bg.gif") center/cover no-repeat;
+      background: url("./bg.gif") repeat;
+      background-size: 220px;
       filter: brightness(0.9);
-      transform: scale(1.02);
       z-index: -2;
     }
 
     .bg-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(255, 240, 248, 0.55);
+      background: rgba(255, 240, 248, 0.65);
       backdrop-filter: blur(2px);
       z-index: -1;
     }
 
     .card {
       text-align: center;
-      background: rgba(255,255,255,.82);
+      background: rgba(255,255,255,.9);
       border: 1px solid rgba(255,255,255,.6);
-      padding: 28px 22px;
+      padding: 30px 24px;
       border-radius: 18px;
       box-shadow: 0 10px 30px rgba(0,0,0,.12);
       max-width: 520px;
       margin: 16px;
     }
 
-    h1 { margin: 0 0 14px; font-size: 34px; }
-    p  { margin: 0 0 18px; font-size: 16px; opacity: .85; }
+    h1 { margin: 0 0 12px; font-size: 32px; }
+    p  { margin: 0 0 18px; font-size: 17px; opacity: .9; }
 
     .btns {
       display: flex;
@@ -86,19 +86,18 @@
 
     #msg {
       margin-top: 16px;
-      font-size: 18px;
+      font-size: 20px;
       font-weight: 700;
       color: var(--pink);
       min-height: 1.2em;
     }
 
-    /* YES modal */
     .modal {
       position: fixed;
       inset: 0;
       display: none;
       place-items: center;
-      background: rgba(0,0,0,.55);
+      background: rgba(0,0,0,.6);
       padding: 18px;
     }
 
@@ -111,6 +110,7 @@
       width: min(92vw, 720px);
       overflow: hidden;
       box-shadow: 0 20px 60px rgba(0,0,0,.35);
+      text-align: center;
     }
 
     .modal-card img {
@@ -119,17 +119,24 @@
       height: auto;
     }
 
+    .modal-text {
+      padding: 16px;
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--pink);
+    }
+
     .modal-actions {
       display: flex;
       justify-content: center;
-      padding: 12px;
+      padding: 12px 16px 18px;
       background: #fff;
     }
 
     .close {
       background: #111827;
       color: white;
-      padding: 10px 14px;
+      padding: 10px 16px;
       border-radius: 999px;
     }
   </style>
@@ -140,8 +147,8 @@
   <div class="bg-overlay"></div>
 
   <div class="card">
-    <h1>Will you be my Valentine? 💘</h1>
-    <p>There is clearly a correct choice.</p>
+    <h1>My dear Ashima Singh 💖</h1>
+    <p>Will you be my Valemtimes?</p>
 
     <div class="btns">
       <button id="yes">Yes</button>
@@ -154,6 +161,7 @@
   <div class="modal" id="modal">
     <div class="modal-card">
       <img src="./yes.jpg" alt="A surprise 💖" />
+      <div class="modal-text">YAYYYY!! I knew you'd say yes 🥰💘</div>
       <div class="modal-actions">
         <button class="close" id="closeModal">Close</button>
       </div>
@@ -185,26 +193,23 @@
 
     noBtn.addEventListener("mouseenter", moveNoButton);
     noBtn.addEventListener("mousemove", moveNoButton);
-
     noBtn.addEventListener("touchstart", (e) => {
       e.preventDefault();
       moveNoButton();
     }, { passive: false });
-
     noBtn.addEventListener("click", (e) => {
       e.preventDefault();
       moveNoButton();
     });
 
     yesBtn.addEventListener("click", () => {
-      msg.textContent = "YAYYYYY!! 💖🥰";
+      msg.textContent = "She said YES to Valemtimes!!! 💖🥹";
       modal.classList.add("show");
       noBtn.style.display = "none";
       yesBtn.style.display = "none";
     });
 
     closeModal.addEventListener("click", () => modal.classList.remove("show"));
-
     modal.addEventListener("click", (e) => {
       if (e.target === modal) modal.classList.remove("show");
     });
