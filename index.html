@@ -6,7 +6,9 @@
   <title>Valemtimes</title>
 
   <style>
-    :root { --pink: #ff3b7a; }
+    :root { --pink:#ff3b7a; --ink:#111827; }
+
+    * { box-sizing: border-box; }
 
     body{
       margin:0;height:100vh;display:grid;place-items:center;
@@ -19,40 +21,61 @@
       position:fixed;inset:0;
       background:url("./bg.gif") repeat;
       background-size:220px;
-      z-index:-3;
+      z-index:-5;
     }
 
-    /* Starts dark → gets brighter as "No" is attempted */
-    .darkness{
-      position:fixed;inset:0;background:#000;
-      opacity:0.9;
-      transition:opacity 0.6s ease;
-      z-index:-2;
+    /* Cinematic darkness → sunrise spotlight */
+    .spotlight{
+      position:fixed;inset:0;z-index:-4;
+      /* uses CSS variables controlled by JS */
+      background:
+        radial-gradient(circle at var(--sx, 50%) var(--sy, 40%),
+          rgba(255,180,210, calc(0.20 + (1 - var(--dark, 0.92)) * 0.35)) 0%,
+          rgba(255,130,170, calc(0.12 + (1 - var(--dark, 0.92)) * 0.25)) 28%,
+          rgba(0,0,0, var(--dark, 0.92)) 62%,
+          rgba(0,0,0, var(--dark, 0.92)) 100%);
+      transition: background 700ms ease;
     }
 
-    /* Soft romantic tint */
-    .bg-overlay{
-      position:fixed;inset:0;
-      background:rgba(255,240,248,.50);
-      backdrop-filter:blur(2px);
-      z-index:-1;
+    .tint{
+      position:fixed;inset:0;z-index:-3;
+      background:rgba(255,240,248,.42);
+      backdrop-filter: blur(2px);
     }
 
+    /* Glass card + subtle float */
     .card{
       text-align:center;
-      background:rgba(255,255,255,.92);
-      padding:28px 22px;border-radius:18px;
-      box-shadow:0 10px 30px rgba(0,0,0,.25);
-      max-width:560px;margin:16px;
+      width:min(620px, 92vw);
+      padding:28px 22px;
+      border-radius:18px;
+      background: rgba(255,255,255,.18);
+      border: 1px solid rgba(255,255,255,.25);
+      box-shadow: 0 18px 60px rgba(0,0,0,.30);
+      backdrop-filter: blur(10px);
+      color:#111;
+      animation: floaty 3.2s ease-in-out infinite;
+    }
+    @keyframes floaty{
+      0%,100% { transform: translateY(0px); }
+      50% { transform: translateY(-6px); }
     }
 
-    h1{margin:0 0 10px;font-size:32px;}
-    p{margin:0 0 16px;font-size:17px;opacity:.95;}
+    .card-inner{
+      background: rgba(255,255,255,.78);
+      border: 1px solid rgba(255,255,255,.45);
+      border-radius:16px;
+      padding:22px 18px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.55);
+    }
 
-    .btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
+    h1{margin:0 0 8px;font-size:32px;}
+    p{margin:0 0 14px;font-size:17px;opacity:.95;}
+
+    .btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:4px;}
     button{
       font-size:18px;padding:12px 18px;border:0;border-radius:999px;
-      cursor:pointer;transition:transform .12s ease;
+      cursor:pointer;transition:transform .12s ease, filter .2s ease;
       -webkit-tap-highlight-color:transparent;
       user-select:none;
     }
@@ -60,69 +83,81 @@
 
     #yes{
       background:var(--pink);color:#fff;
-      box-shadow:0 10px 20px rgba(255,59,122,.25);
+      box-shadow:0 12px 24px rgba(255,59,122,.28);
     }
+    #yes:hover{filter:brightness(1.04);}
 
     #no{
-      background:#111827;color:#fff;
+      background:var(--ink);color:#fff;
       position:fixed;left:50%;top:55%;
       transform:translate(-50%,-50%);
+      will-change: left, top, transform;
     }
 
     #msg{
       margin-top:14px;
       font-size:18px;
-      font-weight:800;
+      font-weight:900;
       color:var(--pink);
-      min-height:1.6em;
+      min-height:2.1em;
     }
-
     .hint{
       margin-top:8px;
       font-size:13px;
-      opacity:.7;
+      opacity:.78;
     }
 
     /* Modal */
-    .modal{position:fixed;inset:0;display:none;place-items:center;background:rgba(0,0,0,.65);padding:18px;}
+    .modal{
+      position:fixed;inset:0;display:none;place-items:center;
+      background:rgba(0,0,0,.72);padding:18px;
+    }
     .modal.show{display:grid;}
-
     .modal-card{
-      background:#fff;border-radius:16px;width:min(92vw,740px);
-      box-shadow:0 20px 60px rgba(0,0,0,.35);
-      text-align:center;overflow:hidden;
+      width:min(92vw, 760px);
+      background:#fff;border-radius:18px;
+      box-shadow:0 22px 90px rgba(0,0,0,.55);
+      overflow:hidden;
+      animation: zoomIn 520ms cubic-bezier(.2,1.2,.2,1) forwards;
+      transform: scale(.92);
+      opacity: 0;
+    }
+    @keyframes zoomIn{
+      to{ transform: scale(1); opacity:1; }
     }
 
     .modal-head{
       padding:14px 16px;
-      font-weight:900;
+      background:rgba(255,59,122,.08);
       color:var(--pink);
+      font-weight:950;
       font-size:18px;
-      background:rgba(255,59,122,.06);
+      letter-spacing:.2px;
+      text-align:center;
     }
 
-    /* Gift box stage */
     .stage{
       position:relative;
-      width:min(72vw,460px);
-      height:min(60vh,460px);
-      display:grid;place-items:center;
-      padding:10px;
+      width:min(72vw, 460px);
+      height:min(60vh, 460px);
+      margin: 0 auto;
+      display:grid;
+      place-items:center;
+      padding:12px;
     }
 
+    /* Gift box */
     .box-wrap{
       position:relative;
       width:190px;height:150px;
       transform:translateY(12px);
     }
-
     .box{
       position:absolute;left:0;right:0;bottom:0;margin:auto;
       width:190px;height:120px;border-radius:14px;
       background:linear-gradient(180deg,#ff7aa6,#ff3b7a);
       box-shadow:0 18px 30px rgba(0,0,0,.22);
     }
-
     .lid{
       position:absolute;left:0;right:0;top:0;margin:auto;
       width:200px;height:54px;border-radius:14px;
@@ -131,14 +166,30 @@
       transform-origin:50% 100%;
       transform:translateY(0) rotateX(0deg);
     }
+    .bow{
+      position:absolute;left:50%;top:-10px;
+      width:80px;height:50px;transform:translateX(-50%);
+    }
+    .bow:before,.bow:after{
+      content:"";
+      position:absolute;top:10px;
+      width:40px;height:26px;border-radius:20px 20px 20px 4px;
+      background:rgba(255,255,255,.90);
+    }
+    .bow:before{left:0;transform:rotate(-12deg);}
+    .bow:after{right:0;transform:scaleX(-1) rotate(-12deg);}
+    .knot{
+      position:absolute;left:50%;top:20px;width:16px;height:16px;
+      border-radius:999px;background:#fff;transform:translateX(-50%);
+    }
 
     .surprise{
       position:absolute;
-      width:min(60vw,380px);
+      width:min(60vw, 400px);
       border-radius:16px;
       transform:translateY(80px) scale(.35);
       opacity:0;
-      box-shadow:0 20px 60px rgba(0,0,0,.35);
+      box-shadow:0 22px 70px rgba(0,0,0,.40);
       pointer-events:none;
     }
 
@@ -152,75 +203,113 @@
       75%{transform:translateY(11px) rotate(-1deg)}
       100%{transform:translateY(12px) rotate(0deg)}
     }
-
     .open .lid{ animation:lidOpen .75s cubic-bezier(.2,.9,.2,1) forwards; }
     @keyframes lidOpen{
       0%{transform:translateY(0) rotateX(0deg)}
       40%{transform:translateY(-6px) rotateX(35deg)}
       100%{transform:translateY(-10px) rotateX(70deg)}
     }
-
-    .open .surprise{
-      animation:popOut .9s cubic-bezier(.12,1.15,.25,1) forwards;
-    }
+    .open .surprise{ animation:popOut .9s cubic-bezier(.12,1.15,.25,1) forwards; }
     @keyframes popOut{
       0%{opacity:0;transform:translateY(80px) scale(.35)}
-      55%{opacity:1;transform:translateY(-120px) scale(1.10)}
-      80%{opacity:1;transform:translateY(-105px) scale(.98)}
-      100%{opacity:1;transform:translateY(-110px) scale(1)}
+      55%{opacity:1;transform:translateY(-125px) scale(1.12)}
+      80%{opacity:1;transform:translateY(-110px) scale(.98)}
+      100%{opacity:1;transform:translateY(-116px) scale(1)}
     }
 
     .modal-actions{
       display:flex;gap:10px;justify-content:center;
       padding:14px 16px;background:#fff;
     }
-    .close{
-      background:#111827;color:#fff;
-      padding:10px 16px;border-radius:999px;border:0;
+    .pill{
+      border:0;border-radius:999px;
+      padding:10px 16px;
+      font-weight:850;
+      cursor:pointer;
     }
-    .pause{
-      background:rgba(17,24,39,.10);
-      color:#111827;
-      padding:10px 16px;border-radius:999px;border:0;
-      font-weight:700;
+    .pill.dark{ background:var(--ink); color:#fff; }
+    .pill.light{ background:rgba(17,24,39,.10); color:var(--ink); }
+
+    /* Confetti + hearts */
+    .fx{
+      position:absolute;inset:0;pointer-events:none;overflow:hidden;
+    }
+    .confetti, .heart{
+      position:absolute;left:50%;top:50%;
+      transform:translate(-50%,-50%);
+      opacity:0;
+      will-change: transform, opacity;
+    }
+    .confetti{
+      width:10px;height:14px;border-radius:3px;
+      background:var(--c, #ff3b7a);
+    }
+    .heart{
+      font-size:22px;
+      filter: drop-shadow(0 10px 10px rgba(0,0,0,.18));
+    }
+
+    .burst .confetti{
+      opacity:1;
+      animation: fly 980ms ease-out forwards;
+    }
+    @keyframes fly{
+      0%{transform:translate(-50%,-50%) translate(0,0) rotate(0deg);opacity:1;}
+      100%{transform:translate(-50%,-50%) translate(var(--dx),var(--dy)) rotate(720deg);opacity:0;}
+    }
+
+    .rise .heart{
+      opacity:1;
+      animation: rise 2200ms ease-out forwards;
+    }
+    @keyframes rise{
+      0%{transform:translate(-50%,-50%) translate(0,0) scale(.9);opacity:0;}
+      12%{opacity:1;}
+      100%{transform:translate(-50%,-50%) translate(var(--hx), var(--hy)) scale(1.15);opacity:0;}
     }
   </style>
 </head>
 
 <body>
   <div class="bg"></div>
-  <div class="darkness" id="darkness"></div>
-  <div class="bg-overlay"></div>
+  <div class="spotlight" id="spotlight"></div>
+  <div class="tint"></div>
 
   <div class="card">
-    <h1>My dear Ashima Singh 💖</h1>
-    <p>Will you be my <b>Valemtimes</b>?</p>
+    <div class="card-inner">
+      <h1>My dear Ashima Singh 💖</h1>
+      <p>Will you be my <b>Valemtimes</b>?</p>
 
-    <div class="btns">
-      <button id="yes">Yes 😌</button>
-      <button id="no" aria-label="No">No 🙃</button>
+      <div class="btns">
+        <button id="yes">Yes 😌</button>
+        <button id="no" aria-label="No">No 🙃</button>
+      </div>
+
+      <div id="msg"></div>
+      <div class="hint" id="hint">Filmy mode ON 🎬 — try clicking “No” for dialogues.</div>
     </div>
-
-    <div id="msg"></div>
-    <div class="hint" id="hint">Tip: the “No” button is training for cardio.</div>
   </div>
 
-  <!-- Surprise modal -->
+  <!-- Modal -->
   <div class="modal" id="modal">
     <div class="modal-card">
-      <div class="modal-head" id="modalHead">✅ Correct answer detected.</div>
+      <div class="modal-head" id="modalHead">🎬 Scene: “YES” — take one!</div>
 
       <div class="stage">
+        <div class="fx" id="fx"></div>
+
         <div class="box-wrap" id="boxWrap">
-          <div class="lid"></div>
+          <div class="lid">
+            <div class="bow"><div class="knot"></div></div>
+          </div>
           <div class="box"></div>
           <img class="surprise" id="surpriseImg" src="./yes.jpg" alt="A surprise 💖" />
         </div>
       </div>
 
       <div class="modal-actions">
-        <button class="pause" id="toggleMusic">Pause music</button>
-        <button class="close" id="closeModal">Close</button>
+        <button class="pill light" id="toggleMusic">Pause music</button>
+        <button class="pill dark" id="closeModal">Close</button>
       </div>
     </div>
   </div>
@@ -232,108 +321,218 @@
     const yesBtn = document.getElementById("yes");
     const msg = document.getElementById("msg");
     const hint = document.getElementById("hint");
-    const darkness = document.getElementById("darkness");
+
+    const spotlight = document.getElementById("spotlight");
 
     const modal = document.getElementById("modal");
     const boxWrap = document.getElementById("boxWrap");
+    const fx = document.getElementById("fx");
     const music = document.getElementById("music");
     const toggleMusic = document.getElementById("toggleMusic");
     const closeModal = document.getElementById("closeModal");
     const modalHead = document.getElementById("modalHead");
 
-    let lightLevel = 0.90;      // starts dark
-    let noAttempts = 0;
+    // Cinematic lighting state
+    let dark = 0.92; // 0 = fully bright, 1 = dark
+    let attempts = 0;
+    let noDisabled = false;
 
-    const noMessages = [
-      "Nice try 😌",
-      "No button said: *not today* 🏃‍♀️💨",
-      "Ashima, that was suspicious 👀",
-      "Plot twist: the ‘No’ is on vacation 🏝️",
-      "Your finger: ❌  The universe: ✅",
-      "Hehe. Again? 🤭",
-      "Okay okay… you’re persistent 😭",
-      "This is basically a mini-game now 🎮"
+    const dialogues = [
+      "Ashima… ‘No’ toh bas trailer tha. 😌",
+      "Picture abhi baaki hai, mere dost! 🎬",
+      "‘No’ button: *Main toh bhaag raha hoon!* 🏃‍♀️💨",
+      "Romance scene mein ‘No’ allowed nahi 😤",
+      "Ye ‘No’ nahi… plot twist hai 😭",
+      "Background: dark. Intentions: pure. Answer: YES. ✅",
+      "Dramatic pause… (2 seconds)… YES? 😌",
+      "Villain entry: ‘No’ — but hero says: *nahi chalega!* 😭",
+      "Main ‘Valemtimes’ maang raha hoon, EMI nahi 🥲",
+      "Ashima Singh, ab toh bas YES hi bacha hai 💖"
     ];
 
-    function setMsg(text) {
-      msg.textContent = text;
+    function setMsg(t){ msg.textContent = t; }
+
+    function setSpotlight(xPct, yPct){
+      spotlight.style.setProperty("--sx", xPct + "%");
+      spotlight.style.setProperty("--sy", yPct + "%");
+    }
+    function setDarkness(v){
+      dark = Math.max(0, Math.min(0.95, v));
+      spotlight.style.setProperty("--dark", dark.toFixed(3));
     }
 
-    function brightenBackground() {
-      // gets brighter each No attempt
-      lightLevel -= 0.10;
-      if (lightLevel < 0) lightLevel = 0;
-      darkness.style.opacity = lightLevel;
+    // Start state
+    setDarkness(dark);
+    setSpotlight(50, 40);
 
-      // funny hints as it brightens
-      if (lightLevel <= 0.60 && lightLevel > 0.35) hint.textContent = "It’s getting brighter… coincidence? 😇";
-      if (lightLevel <= 0.35) hint.textContent = "At this point, just press YES 😭💖";
+    // Make screen brighten + warmer as she tries "No"
+    function brighten(){
+      setDarkness(dark - 0.10);
+
+      if (dark <= 0.65 && dark > 0.40) hint.textContent = "Lighting bhi romance support kar rahi hai ✨";
+      if (dark <= 0.40) hint.textContent = "Bas ab… hero ko YES chahiye 😭💘";
     }
 
-    function moveNoButton() {
-      noAttempts++;
+    function moveNoButton(){
+      if (noDisabled) return;
 
-      const pad = 12;
+      attempts++;
+      setMsg(dialogues[attempts % dialogues.length]);
+
+      // Move spotlight toward where NO ran to (cinematic chase)
+      const pad = 14;
       const w = window.innerWidth;
       const h = window.innerHeight;
 
+      // Evolving difficulty: faster + smaller + slight rotation
+      const shrinkAt = 8;
+      const spinAt = 6;
+      const disableAt = 14;
+
+      if (attempts >= shrinkAt) {
+        noBtn.style.padding = "6px 10px";
+        noBtn.style.fontSize = "14px";
+        noBtn.textContent = "No? 😅";
+      }
+      if (attempts >= spinAt) {
+        noBtn.style.transform = "translate(-50%,-50%) rotate(" + (attempts * 8) + "deg)";
+      }
+
+      // Random position inside viewport
       const bw = noBtn.offsetWidth;
       const bh = noBtn.offsetHeight;
 
-      // make the No button harder over time
-      const safeW = Math.max(50, w - bw - pad * 2);
-      const safeH = Math.max(50, h - bh - pad * 2);
+      const safeW = Math.max(60, w - bw - pad * 2);
+      const safeH = Math.max(60, h - bh - pad * 2);
 
       const x = Math.floor(Math.random() * safeW) + pad;
       const y = Math.floor(Math.random() * safeH) + pad;
 
       noBtn.style.left = x + "px";
       noBtn.style.top  = y + "px";
-      noBtn.style.transform = "none";
 
-      const line = noMessages[noAttempts % noMessages.length];
-      setMsg(line);
+      // Spotlight chases the No button
+      setSpotlight(Math.round((x / w) * 100), Math.round((y / h) * 100));
 
-      brightenBackground();
+      brighten();
 
-      // after enough attempts, gently nudge her to YES
-      if (noAttempts === 6) setMsg("Okay enough. Please click YES like a good person 😭");
-      if (noAttempts === 10) setMsg("Final boss defeated. Now click YES. 🥰");
-      if (noAttempts >= 12) {
-        // make No tiny & slow her down (funny)
-        noBtn.style.padding = "6px 10px";
-        noBtn.style.fontSize = "14px";
-        noBtn.textContent = "No? 😅";
+      if (attempts >= disableAt) {
+        noDisabled = true;
+        noBtn.textContent = "NO not available 🚫";
+        noBtn.style.transform = "none";
+        noBtn.style.filter = "grayscale(1)";
+        setMsg("System: ‘No’ option removed for romantic reasons. ✅");
+        hint.textContent = "Now the only button left is… YES 😌";
       }
     }
 
+    // Events for No
     noBtn.addEventListener("mouseenter", moveNoButton);
     noBtn.addEventListener("mousemove", moveNoButton);
-    noBtn.addEventListener("touchstart", (e) => { e.preventDefault(); moveNoButton(); }, { passive: false });
+    noBtn.addEventListener("touchstart", (e) => { e.preventDefault(); moveNoButton(); }, { passive:false });
     noBtn.addEventListener("click", (e) => { e.preventDefault(); moveNoButton(); });
 
+    // FX helpers
+    function clearFX(){ fx.innerHTML = ""; }
+
+    function confettiBurst(){
+      clearFX();
+      const colors = ["#ff3b7a","#ff7aa6","#ffd1e2","#ffffff","#111827","#ffb703","#fb8500"];
+      const pieces = 32;
+
+      fx.classList.remove("burst");
+      for (let i=0;i<pieces;i++){
+        const c = document.createElement("div");
+        c.className = "confetti";
+        c.style.setProperty("--c", colors[Math.floor(Math.random()*colors.length)]);
+        c.style.background = c.style.getPropertyValue("--c") || colors[0];
+
+        const dx = (Math.random()*520 - 260) + "px";
+        const dy = (Math.random()*-420 - 80) + "px";
+        c.style.setProperty("--dx", dx);
+        c.style.setProperty("--dy", dy);
+
+        c.style.left = "50%";
+        c.style.top  = "54%";
+        c.style.animationDelay = (i*8) + "ms";
+        fx.appendChild(c);
+      }
+      fx.classList.add("burst");
+      setTimeout(()=> fx.classList.remove("burst"), 1100);
+    }
+
+    function heartRise(){
+      const hearts = 18;
+      fx.classList.remove("rise");
+
+      for (let i=0;i<hearts;i++){
+        const h = document.createElement("div");
+        h.className = "heart";
+        h.textContent = "💖";
+
+        const hx = (Math.random()*520 - 260) + "px";
+        const hy = (Math.random()*-520 - 180) + "px";
+        h.style.setProperty("--hx", hx);
+        h.style.setProperty("--hy", hy);
+
+        h.style.left = (30 + Math.random()*40) + "%";
+        h.style.top  = (62 + Math.random()*10) + "%";
+        h.style.animationDelay = (i*70) + "ms";
+
+        fx.appendChild(h);
+      }
+
+      fx.classList.add("rise");
+      setTimeout(()=> fx.classList.remove("rise"), 2400);
+    }
+
+    // Smooth music fade-in
+    function fadeInMusic(){
+      music.volume = 0;
+      let v = 0;
+      const step = 0.04;       // speed
+      const interval = 120;    // ms
+      const maxV = 0.90;
+
+      const timer = setInterval(() => {
+        v = Math.min(maxV, v + step);
+        music.volume = v;
+        if (v >= maxV) clearInterval(timer);
+      }, interval);
+    }
+
     yesBtn.addEventListener("click", async () => {
-      setMsg("YESSS!! Ashima Singh has chosen correctly 💖🥹");
+      setMsg("👏 CUT! Perfect take. Ashima said YES 💖🥹");
       modalHead.textContent = "🎁 Surprise unlocked for Ashima Singh!";
 
       modal.classList.add("show");
       noBtn.style.display = "none";
       yesBtn.style.display = "none";
 
-      // play music (user gesture)
+      // Make it bright and warm at YES moment
+      setSpotlight(50, 40);
+      setDarkness(0.10);
+
+      // Play music (user gesture). Fade-in for cinematic feel.
       try {
-        music.currentTime = 0;
+        music.currentTime = 0; // start from beginning
         await music.play();
+        fadeInMusic();
         toggleMusic.textContent = "Pause music";
       } catch {
         toggleMusic.textContent = "Play music";
       }
 
-      // restart animation cleanly
-      boxWrap.classList.remove("open", "shake");
+      // Restart gift animation
+      boxWrap.classList.remove("open","shake");
       void boxWrap.offsetWidth;
       boxWrap.classList.add("shake");
-      setTimeout(() => boxWrap.classList.add("open"), 520);
+
+      setTimeout(() => {
+        boxWrap.classList.add("open");
+        confettiBurst();
+        heartRise();
+      }, 520);
     });
 
     toggleMusic.addEventListener("click", async () => {
@@ -349,9 +548,9 @@
     closeModal.addEventListener("click", () => modal.classList.remove("show"));
     modal.addEventListener("click", (e) => { if (e.target === modal) modal.classList.remove("show"); });
 
-    // start with No moved once
-    setTimeout(moveNoButton, 250);
-    window.addEventListener("resize", () => setTimeout(moveNoButton, 50));
+    // Initial no movement to start the drama
+    setTimeout(() => moveNoButton(), 250);
+    window.addEventListener("resize", () => setTimeout(() => moveNoButton(), 50));
   </script>
 </body>
 </html>
