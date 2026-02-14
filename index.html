@@ -8,142 +8,111 @@
   <style>
     :root { --pink: #ff3b7a; }
 
-    body {
-      margin: 0;
-      height: 100vh;
-      display: grid;
-      place-items: center;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      overflow: hidden;
+    body{
+      margin:0;height:100vh;display:grid;place-items:center;
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      overflow:hidden;background:#000;
     }
 
     /* Repeating GIF background */
-    .bg {
-      position: fixed;
-      inset: 0;
-      background: url("./bg.gif") repeat;
-      background-size: 220px;
-      filter: brightness(0.9);
-      z-index: -2;
+    .bg{
+      position:fixed;inset:0;
+      background:url("./bg.gif") repeat;
+      background-size:220px;
+      z-index:-3;
     }
 
-    .bg-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(255, 240, 248, 0.65);
-      backdrop-filter: blur(2px);
-      z-index: -1;
+    /* DARK → LIGHT overlay */
+    .darkness{
+      position:fixed;inset:0;
+      background:#000;
+      opacity:0.85;
+      transition:opacity 0.8s ease;
+      z-index:-2;
     }
 
-    .card {
-      text-align: center;
-      background: rgba(255,255,255,.9);
-      border: 1px solid rgba(255,255,255,.6);
-      padding: 30px 24px;
-      border-radius: 18px;
-      box-shadow: 0 10px 30px rgba(0,0,0,.12);
-      max-width: 520px;
-      margin: 16px;
+    .bg-overlay{
+      position:fixed;inset:0;
+      background:rgba(255,240,248,.55);
+      backdrop-filter:blur(2px);
+      z-index:-1;
     }
 
-    h1 { margin: 0 0 12px; font-size: 32px; }
-    p  { margin: 0 0 18px; font-size: 17px; opacity: .9; }
-
-    .btns {
-      display: flex;
-      gap: 14px;
-      justify-content: center;
-      flex-wrap: wrap;
+    .card{
+      text-align:center;
+      background:rgba(255,255,255,.92);
+      padding:30px 24px;border-radius:18px;
+      box-shadow:0 10px 30px rgba(0,0,0,.25);
+      max-width:520px;margin:16px;
     }
 
-    button {
-      font-size: 18px;
-      padding: 12px 18px;
-      border: 0;
-      border-radius: 999px;
-      cursor: pointer;
-      transition: transform .12s ease;
-      user-select: none;
-      -webkit-tap-highlight-color: transparent;
+    h1{margin:0 0 12px;font-size:32px;}
+    p{margin:0 0 18px;font-size:17px;}
+
+    .btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
+    button{
+      font-size:18px;padding:12px 18px;border:0;border-radius:999px;
+      cursor:pointer;transition:transform .12s ease;
+    }
+    button:active{transform:scale(.98);}
+
+    #yes{background:var(--pink);color:#fff;}
+    #no{
+      background:#111827;color:#fff;
+      position:fixed;left:50%;top:55%;
+      transform:translate(-50%,-50%);
     }
 
-    button:active { transform: scale(.98); }
+    #msg{margin-top:16px;font-size:20px;font-weight:700;color:var(--pink);}
 
-    #yes {
-      background: var(--pink);
-      color: white;
-      box-shadow: 0 10px 20px rgba(255,59,122,.25);
+    /* Modal */
+    .modal{position:fixed;inset:0;display:none;place-items:center;background:rgba(0,0,0,.6);}
+    .modal.show{display:grid;}
+
+    .modal-card{
+      background:#fff;border-radius:16px;width:min(92vw,720px);
+      box-shadow:0 20px 60px rgba(0,0,0,.35);text-align:center;padding-bottom:14px;
     }
 
-    #no {
-      background: #111827;
-      color: white;
-      position: fixed;
-      left: 50%;
-      top: 55%;
-      transform: translate(-50%, -50%);
+    .stage{position:relative;width:min(72vw,420px);height:min(60vh,420px);display:grid;place-items:center;margin:auto;}
+
+    .box-wrap{position:relative;width:190px;height:150px;}
+
+    .box{
+      position:absolute;left:0;right:0;bottom:0;margin:auto;
+      width:190px;height:120px;border-radius:14px;background:#ff3b7a;
     }
 
-    #msg {
-      margin-top: 16px;
-      font-size: 20px;
-      font-weight: 700;
-      color: var(--pink);
-      min-height: 1.2em;
+    .lid{
+      position:absolute;left:0;right:0;top:0;margin:auto;
+      width:200px;height:54px;border-radius:14px;background:#ff9fc4;
+      transform-origin:50% 100%;
     }
 
-    .modal {
-      position: fixed;
-      inset: 0;
-      display: none;
-      place-items: center;
-      background: rgba(0,0,0,.6);
-      padding: 18px;
+    .surprise{
+      position:absolute;width:min(60vw,360px);border-radius:16px;
+      transform:translateY(80px) scale(.3);opacity:0;
+      box-shadow:0 20px 60px rgba(0,0,0,.35);
     }
 
-    .modal.show { display: grid; }
+    .open .lid{animation:lidOpen .7s forwards;}
+    .open .surprise{animation:popOut .9s forwards;}
 
-    .modal-card {
-      background: white;
-      border-radius: 16px;
-      max-width: 720px;
-      width: min(92vw, 720px);
-      overflow: hidden;
-      box-shadow: 0 20px 60px rgba(0,0,0,.35);
-      text-align: center;
+    @keyframes lidOpen{
+      to{transform:translateY(-10px) rotateX(70deg);}
+    }
+    @keyframes popOut{
+      60%{opacity:1;transform:translateY(-110px) scale(1.1);}
+      100%{opacity:1;transform:translateY(-100px) scale(1);}
     }
 
-    .modal-card img {
-      display: block;
-      width: 100%;
-      height: auto;
-    }
-
-    .modal-text {
-      padding: 16px;
-      font-size: 20px;
-      font-weight: 600;
-      color: var(--pink);
-    }
-
-    .modal-actions {
-      display: flex;
-      justify-content: center;
-      padding: 12px 16px 18px;
-      background: #fff;
-    }
-
-    .close {
-      background: #111827;
-      color: white;
-      padding: 10px 16px;
-      border-radius: 999px;
-    }
+    .close{margin:12px;padding:10px 16px;border-radius:999px;background:#111827;color:#fff;border:0;}
   </style>
 </head>
 
 <body>
   <div class="bg"></div>
+  <div class="darkness" id="darkness"></div>
   <div class="bg-overlay"></div>
 
   <div class="card">
@@ -160,62 +129,62 @@
 
   <div class="modal" id="modal">
     <div class="modal-card">
-      <img src="./yes.jpg" alt="A surprise 💖" />
-      <div class="modal-text">YAYYYY!! I knew you'd say yes 🥰💘</div>
-      <div class="modal-actions">
-        <button class="close" id="closeModal">Close</button>
+      <div class="stage">
+        <div class="box-wrap" id="boxWrap">
+          <div class="lid"></div>
+          <div class="box"></div>
+          <img class="surprise" src="./yes.jpg" />
+        </div>
       </div>
+      <button class="close" id="closeModal">Close</button>
     </div>
   </div>
+
+  <!-- MUSIC FILE -->
+  <audio id="music" src="./music.mp3"></audio>
 
   <script>
     const noBtn = document.getElementById("no");
     const yesBtn = document.getElementById("yes");
-    const msg = document.getElementById("msg");
     const modal = document.getElementById("modal");
-    const closeModal = document.getElementById("closeModal");
+    const music = document.getElementById("music");
+    const boxWrap = document.getElementById("boxWrap");
+    const darkness = document.getElementById("darkness");
 
-    function moveNoButton() {
-      const pad = 12;
-      const w = window.innerWidth;
-      const h = window.innerHeight;
+    let lightLevel = 0.85;
 
-      const bw = noBtn.offsetWidth;
-      const bh = noBtn.offsetHeight;
+    function brightenBackground(){
+      lightLevel -= 0.12;
+      if(lightLevel < 0) lightLevel = 0;
+      darkness.style.opacity = lightLevel;
+    }
 
-      const x = Math.floor(Math.random() * (w - bw - pad * 2)) + pad;
-      const y = Math.floor(Math.random() * (h - bh - pad * 2)) + pad;
-
+    function moveNoButton(){
+      const x = Math.random() * (window.innerWidth - 100);
+      const y = Math.random() * (window.innerHeight - 50);
       noBtn.style.left = x + "px";
-      noBtn.style.top  = y + "px";
-      noBtn.style.transform = "none";
+      noBtn.style.top = y + "px";
+      brightenBackground();
     }
 
     noBtn.addEventListener("mouseenter", moveNoButton);
     noBtn.addEventListener("mousemove", moveNoButton);
-    noBtn.addEventListener("touchstart", (e) => {
-      e.preventDefault();
-      moveNoButton();
-    }, { passive: false });
-    noBtn.addEventListener("click", (e) => {
+    noBtn.addEventListener("click", e => {
       e.preventDefault();
       moveNoButton();
     });
 
-    yesBtn.addEventListener("click", () => {
-      msg.textContent = "She said YES to Valemtimes!!! 💖🥹";
+    yesBtn.addEventListener("click", async () => {
       modal.classList.add("show");
       noBtn.style.display = "none";
       yesBtn.style.display = "none";
+
+      try { await music.play(); } catch {}
+
+      setTimeout(()=> boxWrap.classList.add("open"), 300);
     });
 
-    closeModal.addEventListener("click", () => modal.classList.remove("show"));
-    modal.addEventListener("click", (e) => {
-      if (e.target === modal) modal.classList.remove("show");
-    });
-
-    setTimeout(moveNoButton, 200);
-    window.addEventListener("resize", () => setTimeout(moveNoButton, 50));
+    document.getElementById("closeModal").onclick = () => modal.classList.remove("show");
   </script>
 </body>
 </html>
